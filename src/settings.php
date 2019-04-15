@@ -19,7 +19,7 @@ return [
             'host' => 'localhost',
             'user' => 'root',
             'pass' => 'j3mp0l4n',
-            'dbname' => 'spmb_v3',
+            'dbname' => 'hotspot',
             'driver' => 'mysql'
         ]
     ],

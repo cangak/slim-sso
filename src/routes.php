@@ -39,15 +39,22 @@ $app->get("/users/search/", function (Request $request, Response $response, $arg
 });
 
 $app->post("/users/", function (Request $request, Response $response, $args){
-    $username = $request->getQueryParam("user");
-    $password = password_hash($request->getQueryParam("password"), PASSWORD_DEFAULT);
+    $posting = $request->getParsedBody();
     $sql = "SELECT * FROM user WHERE username=:username and password_hash=:passwd";
     $stmt = $this->db->prepare($sql);
     $data= [
-        ":username" =>$username,
-        ":passwd" => $password 
+        ":username" =>$posting['user'],
+        ":passwd" => md5($posting['password']) 
             ];
     $stmt->execute($data);
     $result = $stmt->fetchAll();
-    return $response->withJson(["status" => "success", "data" => $result], 200);
+    //print_r($posting);exit();
+    if (!empty($result) ) {
+        return $response->withJson(["status" => "success", "data" => $result], 200);
+
+    } else {
+        return $response->withJson(["status" => "error"], 200);
+
+    }
+        
 });
